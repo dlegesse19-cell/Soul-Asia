@@ -1,0 +1,22 @@
+/* ===== Why Choose Us (About) ===== */
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+.why-item{
+  text-align:center;
+  background:var(--white);
+  padding:40px 30px;
+  border-top:4px solid var(--gold);
+}
+.why-item .icon-circle{
+  font-size:2.5rem;
+  display:block;
+  margin-bottom:16px;
+}
+.why-item h3{font-size:1.1rem; margin-bottom:10px;}
+.why-item p{color:var(--ink-soft); font-size:0.92rem;}
+
+/* ===== Responsive ===== */
+@media (max-width:760px){ .why-grid{grid-template-columns:1fr;} }

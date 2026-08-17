@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Follow Up | Soulasia International Ltd.</title>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="sections.css">
+<link rel="stylesheet" href="followups.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+<div class="conn-banner" id="connBanner">Firebase is not configured yet — edit firebaseConfig in the code before this will work.</div>
+
+<div id="header-placeholder"></div>
+
+<section class="page-header">
+  <div class="wrap">
+    <span class="eyebrow">Client Portal</span>
+    <h1>Follow Up on Your Projects</h1>
+    <p>Login to track your orders, inspections, loading, shipments, and access important documents.</p>
+  </div>
+</section>
+
+<section class="login-section" id="loginSection">
+  <div class="wrap" style="display:flex; justify-content:center;">
+    <div class="login-box fade-in">
+      <h2>Client Login</h2>
+      <p class="sub">Enter your credentials to access your project dashboard</p>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter your username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password">
+      </div>
+      <button class="btn-login" id="loginBtn" onclick="handleLogin()">Login →</button>
+      <div class="login-error" id="loginError">Invalid username or password. Please try again.</div>
+    </div>
+  </div>
+</section>
+
+<section class="dashboard" id="dashboard">
+  <div class="wrap">
+    <div class="logout-area">
+      <span class="client-info">
+        Logged in as: <strong id="displayUsername">Client</strong>
+        <span class="role-badge" id="roleBadge">Client</span>
+      </span>
+      <div class="actions">
+        <button class="btn-logout" id="createAccountBtn" style="display:none;" onclick="toggleCreateAccount()">Create Client Account</button>
+        <button class="btn-logout" onclick="toggleChangePassword()">Change Password</button>
+        <button class="btn-logout" onclick="handleLogout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="password-panel" id="createAccountPanel">
+      <h4>🔑 Create Client Account</h4>
+      <div class="form-row">
+        <input type="text" id="newUsername" placeholder="New Username">
+        <input type="password" id="newPassword" placeholder="New Password">
+        <button class="btn-admin" onclick="createAccount()">Create Account</button>
+      </div>
+      <div class="admin-message" id="adminMessage"></div>
+    </div>
+
+    <div class="password-panel" id="changePasswordPanel">
+      <h4>🔒 Change Password</h4>
+      <div class="form-row">
+        <input type="password" id="cpOldPassword" placeholder="Current Password">
+        <input type="password" id="cpNewPassword" placeholder="New Password">
+        <input type="password" id="cpConfirmPassword" placeholder="Confirm New Password">
+        <button class="btn-admin" onclick="changePassword()">Update Password</button>
+      </div>
+      <div class="admin-message" id="cpMessage"></div>
+    </div>
+
+    <div class="admin-client-switcher" id="adminSwitcher">
+      <label for="clientSelect">Switch to Client:</label>
+      <select id="clientSelect">
+        <option value="">Select a client...</option>
+      </select>
+      <button class="btn-switch" onclick="switchToClient()">View Client Files</button>
+      <button class="btn-switch" onclick="switchBackToAdmin()" style="background:var(--sand-2); color:var(--ink);">Back to Admin</button>
+      <button class="btn-switch" onclick="resetClientPassword()" style="background:var(--teal); color:var(--white);">Reset Password</button>
+      <button class="btn-switch" onclick="deleteClient()" style="background:#c0392b; color:var(--white);">Delete Client</button>
+    </div>
+
+    <h2>Welcome, <span id="displayUsername2">Client</span>!</h2>
+    <p class="sub" id="dashboardSub">Select a section below to view your project files.</p>
+
+    <div class="dash-grid">
+      <button class="dash-btn" onclick="openSection('client_info')">
+        <span class="icon">👤</span>
+        Client Information
+      </button>
+      <button class="dash-btn" onclick="openSection('pi_permit')">
+        <span class="icon">📑</span>
+        PI &amp; Permit
+      </button>
+      <button class="dash-btn" onclick="openSection('follow_up')">
+        <span class="icon">📋</span>
+        Follow Up
+      </button>
+      <button class="dash-btn" onclick="openSection('inspection')">
+        <span class="icon">🔍</span>
+        Inspection
+      </button>
+      <button class="dash-btn" onclick="openSection('loading')">
+        <span class="icon">🚛</span>
+        Loading
+      </button>
+      <button class="dash-btn" onclick="openSection('shipment')">
+        <span class="icon">🚢</span>
+        Shipment
+      </button>
+      <button class="dash-btn" onclick="openSection('documents')">
+        <span class="icon">📄</span>
+        Documents
+      </button>
+    </div>
+
+    <div class="file-section" id="client_infoSection">
+      <h3>👤 Client Information</h3>
+      <p class="sub">View your company and project details.</p>
+      <div class="client-info-display">
+        <div class="info-item">
+          <span class="label">Client Name</span>
+          <span class="value" id="infoName">—</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Company</span>
+          <span class="value" id="infoCompany">—</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Email</span>
+          <span class="value" id="infoEmail">—</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Project</span>
+          <span class="value" id="infoProject">—</span>
+        </div>
+      </div>
+      <div class="file-upload-area" id="clientInfoEdit" style="margin-top:20px; border-top:1px solid #EAE2D2; padding-top:20px;">
+        <input type="text" id="editName" placeholder="Full Name" style="flex:1; min-width:150px; padding:10px 12px; border:1px solid #D4CEC4; border-radius:2px; font-size:0.85rem;">
+        <input type="text" id="editCompany" placeholder="Company" style="flex:1; min-width:150px; padding:10px 12px; border:1px solid #D4CEC4; border-radius:2px; font-size:0.85rem;">
+        <input type="email" id="editEmail" placeholder="Email" style="flex:1; min-width:150px; padding:10px 12px; border:1px solid #D4CEC4; border-radius:2px; font-size:0.85rem;">
+        <input type="text" id="editProject" placeholder="Project" style="flex:1; min-width:150px; padding:10px 12px; border:1px solid #D4CEC4; border-radius:2px; font-size:0.85rem;">
+        <button class="btn-upload" onclick="updateClientInfo()">Update Info</button>
+      </div>
+
+      <div class="file-upload-area" style="margin-top:20px;">
+        <input type="file" id="client_infoFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('client_info')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="client_infoFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="file-section" id="pi_permitSection">
+      <h3>📑 PI &amp; Permit</h3>
+      <p class="sub">Upload and view PI and Permit documents.</p>
+      <div class="file-upload-area">
+        <input type="file" id="pi_permitFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('pi_permit')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="pi_permitFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="file-section" id="follow_upSection">
+      <h3>📋 Follow Up</h3>
+      <p class="sub">Upload and view follow-up notes and files.</p>
+      <div class="file-upload-area">
+        <input type="file" id="follow_upFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('follow_up')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="follow_upFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="file-section" id="inspectionSection">
+      <h3>🔍 Inspection</h3>
+      <p class="sub">Upload and view inspection reports and files.</p>
+      <div class="file-upload-area">
+        <input type="file" id="inspectionFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('inspection')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="inspectionFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="file-section" id="loadingSection">
+      <h3>🚛 Loading</h3>
+      <p class="sub">Upload and view loading-related files.</p>
+      <div class="file-upload-area">
+        <input type="file" id="loadingFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('loading')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="loadingFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="file-section" id="shipmentSection">
+      <h3>🚢 Shipment</h3>
+      <p class="sub">Upload and view shipment-related files.</p>
+      <div class="file-upload-area">
+        <input type="file" id="shipmentFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('shipment')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="shipmentFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="file-section" id="documentsSection">
+      <h3>📄 Documents</h3>
+      <p class="sub">Upload and view important project documents.</p>
+      <div class="file-upload-area">
+        <input type="file" id="documentsFileInput" multiple>
+        <button class="btn-upload" onclick="uploadFile('documents')">Upload Files</button>
+      </div>
+      <ul class="file-list" id="documentsFileList">
+        <li class="empty-files">No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <div class="chat-section" id="chatSection">
+      <h3>💬 Chat with Admin</h3>
+      <p class="sub">Send a message to the admin about your project. Messages update live.</p>
+      <div class="chat-messages" id="chatMessages">
+        <div class="message admin">
+          <span class="sender">Admin</span>
+          Welcome! How can I help you today?
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Type your message..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button class="btn-chat-send" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="includes.js"></script>
+<script src="script.js"></script>
+<script type="module" src="followups.js"></script>
+</body>
+</html>

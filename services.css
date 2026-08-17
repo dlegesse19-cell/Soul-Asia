@@ -1,0 +1,25 @@
+/* ===== Services ===== */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+}
+.service-card{
+  background:var(--white);
+  padding:40px 34px;
+}
+.service-card .num{
+  font-family:'Courier New', monospace;
+  font-size:0.7rem;
+  color:var(--gold);
+  letter-spacing:0.1em;
+  display:block;
+  margin-bottom:18px;
+}
+.service-card h3{font-size:1.2rem; margin-bottom:12px;}
+.service-card p{color:var(--ink-soft); font-size:0.94rem;}
+
+/* ===== Responsive ===== */
+@media (max-width:860px){ .services-grid{grid-template-columns:1fr;} }
